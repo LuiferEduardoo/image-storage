@@ -11,10 +11,14 @@ Para instalar y utilizar esta API, se requiere lo siguiente:
 - Servidor web (por ejemplo, Apache o Nginx)
 
 1. Clona el repositorio en tu servidor web:
-    git clone https://github.com/LuiferEduardoo/image-storage.git
+
+        git clone https://github.com/LuiferEduardoo/image-storage.git
+        
+        
 2. Instala las dependencias del proyecto utilizando Composer:
-cd tu-repositorio
-composer install
+
+        cd tu-repositorio
+        composer install
 
 
 3. Crea un archivo .env a partir del archivo .env.example y configura las variables de entorno necesarias:
@@ -61,11 +65,17 @@ Luego que se pasa estos parametros, la API procesará la imagen, la convertira a
 
 En el caso que tú quieras contribuir a mejor esta API, me parece genial. Simplemente debes realizar los siguientes pasos: 
 
-    1. Haz un fork del repositorio.
-    2. Crea una rama para tu contribución (git checkout -b mi-contribucion).
-    3. Haz tus cambios y commitea tus cambios (git commit -am 'Agregué una nueva característica').
-    4. Hacer push a la rama (git push origin mi-contribucion).
-    5. Crea un pull request.
+1. Haz un fork del repositorio.
+2. Crea una rama para tu contribución: 
+
+        git checkout -b mi-contribucion
+4. Haz tus cambios y commitea tus cambios: 
+
+        git commit -am 'Agregué una nueva característica'
+6. Hacer push a la rama 
+
+        git push origin mi-contribucion
+8. Crea un pull request.
 
 
 # Licencia
