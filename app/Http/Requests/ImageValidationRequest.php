@@ -11,9 +11,20 @@ class ImageValidationRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [
-            'image' => 'required|image|max:204800',
-        ];
+        switch ($this->route()->getActionMethod()) {
+            case 'createImage': 
+                return [
+                    'image' => 'required|image|max:204800',
+                ];
+            case 'PatchImage':
+                return [
+                    'name' => 'nullable|string|max:255',
+                    'image' => 'nullable|image',
+                ];
+                // Definir reglas de validación para los otros métodos
+            default:
+                return [];
+            }
     }
 
     protected function failedValidation(Validator $validator)

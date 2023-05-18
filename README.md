@@ -1,6 +1,7 @@
 # API de almacenamiento de imágenes
 
-Esta API está construida en Laravel y permite guardar imágenes en un servidor web. Antes de guardar las imágenes, se convierten a webp para que sean usadas en la web y se hace utilizando la librería Spatie/Image. Cuando se realiza una solicitud POST, la API devuelve un mensaje que indica si la solicitud fue exitosa y la URL de la imagen. Además, para asegurar la seguridad de la API, el endpoint /create/{folder} está protegido con la librería Sanctum y se requiere un token de autenticación generado en otra API para poder acceder.
+Esta API está construida en Laravel y permite guardar imágenes en un servidor web, borrar imagenes, actualizar las imagenes o el nombre y obtener las imagenes. Esto se hace por medio de cuatro endopoint.
+Antes de guardar las imágenes, se convierten a webp para que sean usadas en la web y se hace utilizando la librería "intervention/image", y la extensión de PHP "imagick". Para asegurar la seguridad de la API, todos los endpoint estan protegido con la librería Sanctum y se requiere un token de autenticación generado en otra API para poder acceder.
 
 ## Instalación
 
@@ -9,6 +10,7 @@ Para instalar y utilizar esta API, se requiere lo siguiente:
 - PHP >= 7.3
 - Composer
 - Servidor web (por ejemplo, Apache o Nginx)
+- Imagick
 
 1. Clona el repositorio en tu servidor web:
 
@@ -34,32 +36,48 @@ Para instalar y utilizar esta API, se requiere lo siguiente:
 
         php artisan migrate
 
-# Uso 
 
-Para usar esta API, primero debes generar un token en otro API y usar la misma tabla de la base de datos.
-Las solictudes a la base de datos va hacer por el endpoint "/create/{folder}" y van a tener los siguientes parametros:  
-- Imagen: Va a tener el archivo tipo imagen que se piensa subir. 
-- Folder: El nombre de la carpeta donde se piensa guardar la imagen. 
+## Endpoints
 
-Luego que se pasa estos parametros, la API procesará la imagen, la convertira a webp y la guardará en la carpeta proporcionada. Y dicha solicitud es exitosa devolverá un mensaje de éxito junto cn la URL de la imagen. 
+### /images
+- Método: GET
+- Descripción: Obtiene la lista de imagenes registrados en el sistema.
+- Query Parameters:
+  - id (opcional): Permite obtener una imagen por su id.
+- Respuestas:
+  - Código de estado 200: Lista de imagenes en formato JSON.
+  - Código de estado 404: Imagen no encontrada.
+  - Código de estado 500: Error a la hora de obtener la imagen.
 
-# Ejemplo de solicitud
+### /images/create
+- Método: POST
+- Descripción: Subir una imagen.
+- Query Parameters:
+  - folder (obligatorio): Permite saber en que lugar sera guardado la imagen.
+- Respuestas:
+  - Código de estado 200: Un mensaje de exito y la información de la imagen en formato JSON.
+  - Código de estado 400: Archivo invalido.
+  - Código de estado 500: Error a la hora de subir la imagen.
 
-        curl -X POST \
-        http://localhost:8000/create/images \
-        -H 'Authorization: Bearer {your_token_here}' \
-        -H 'Content-Type: multipart/form-data' \
-        -F 'image=@/path/to/your/image.jpg'
+### /images
+- Método: DELETE
+- Descripción: Borrar una imagen.
+- Query Parameters:
+  - id (obligatorio): Permite obtener la imagen que se quiere borrar.
+- Respuestas:
+  - Código de estado 200: Un mensaje que indica que la imagen fue borrada.
+  - Código de estado 404: Imagen no encontrada.
+  - Código de estado 500: Error a la hora de borrar la imagen.
 
-
-# Respuesta favorable de la API 
-
-        {
-            "success": true,
-            "message": "Image uploaded successfully",
-            "url": "http://localhost:8000/storage/images/image.webp"
-        }
-
+### /images/{id}
+- Método: PATCH
+- Descripción: Actualizar la imagen o su nombre.
+- Parámetros:
+  - id (path): Permite saber cual imagen se va actualizar.
+- Respuestas:
+  - Código de estado 200: Un mensaje que indica que la imagen fue borrada.
+  - Código de estado 409: El nombre ya existe.
+  - Código de estado 500: Error a la hora de cambiar el nombre de la imagen o la imagen.
 
 # ¿Cómo contribuyo?  
 
